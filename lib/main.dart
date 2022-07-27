@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:video_app/video_tumbail.dart';
-import 'package:video_compress/video_compress.dart';
+// import 'package:video_app/video_tumbail.dart';
 import 'package:file_selector/file_selector.dart';
 import 'dart:io';
+
+import 'package:video_compress_ds/video_compress_ds.dart';
 // import 'package:video_compress_example/video_thumbnail.dart';
 
 void main() {
@@ -44,22 +45,24 @@ class _MyHomePageState extends State<MyHomePage> {
       final picker = ImagePicker();
       var pickedFile = await picker.pickVideo(source: ImageSource.gallery);
       file = File(pickedFile!.path);
+      print(file.toString());
     }
     if (file == null) {
       return;
     }
-    await VideoCompress.setLogLevel(0);
-    final info = await VideoCompress.compressVideo(
-      file.path,
-      quality: VideoQuality.MediumQuality,
+    // await VideoCompress.setLogLevel(0);
+    final  info = await VideoCompress.compressVideo(
+      file.path.toString(), 
+      quality: VideoQuality.LowQuality,
       deleteOrigin: false,
-      includeAudio: true,
+      includeAudio: false,
+
     );
-    print(info!.path);
-    print('este es tamaño del archivo ${info.filesize}');
+    // print(info!.path);
+    print('este es tamaño del archivo ${info?.filesize}');
 
     setState(() {
-      _counter = info.path!;
+      _counter = info!.path!;
     });
   }
 
@@ -90,10 +93,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VideoThumbnail()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => VideoThumbnail()),
+                // );
               },
               child: Text('Test thumbnail'),
             ),
